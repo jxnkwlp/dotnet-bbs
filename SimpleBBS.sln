@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleBBS.Core", "SimpleBBS.Core\SimpleBBS.Core.csproj", "{BC6DA3F7-1DB1-4505-AF78-6AF0F144862A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleBBS.Web", "SimpleBBS.Web\SimpleBBS.Web.csproj", "{FBAEE375-14E4-462C-B7AA-1E9983411656}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC6DA3F7-1DB1-4505-AF78-6AF0F144862A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC6DA3F7-1DB1-4505-AF78-6AF0F144862A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC6DA3F7-1DB1-4505-AF78-6AF0F144862A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC6DA3F7-1DB1-4505-AF78-6AF0F144862A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBAEE375-14E4-462C-B7AA-1E9983411656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBAEE375-14E4-462C-B7AA-1E9983411656}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBAEE375-14E4-462C-B7AA-1E9983411656}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBAEE375-14E4-462C-B7AA-1E9983411656}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {496F46F3-3B11-4478-8DEC-CB086DE659B0}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,28 @@
+﻿@using SimpleBBS.Web.Services
+
+@inject WebSignInManager SignInManager
+@inject UserService UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-action="setting" asp-controller="user" asp-route-id="@(User.Identity.Name)">设置</a>
+            </li>
+            <li>
+                <a asp-action="index" asp-controller="user" asp-route-id="@(User.Identity.Name)">Hello @UserManager.GetUserName(User)!</a>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><a asp-action="Register" asp-controller="account">Register</a></li>
+        <li><a asp-action="Login" asp-controller="account">Login</a></li>
+    </ul>
+}
