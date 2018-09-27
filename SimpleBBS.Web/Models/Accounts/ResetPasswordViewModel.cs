@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace SimpleBBS.Web.Models.Accounts
 {
-    public class RegisterViewModel
+    public class ResetPasswordViewModel
     {
-        [Required(ErrorMessage = "Email 必填")]
-        [MaxLength(32)]
-        [EmailAddress(ErrorMessage = "Email 格式不正确")]
+        public long UserId { get; set; }
+
+        [Required]
         public string Email { get; set; }
-         
-        [Required(ErrorMessage = "密码 必填")]
+
+        [Required]
         [MaxLength(16, ErrorMessage = "密码长度不超过16位")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "两次密码输入不一致")]
         public string ConfirmPassword { get; set; }
     }

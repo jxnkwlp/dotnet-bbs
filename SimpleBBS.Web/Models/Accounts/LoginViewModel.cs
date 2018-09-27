@@ -8,10 +8,10 @@ namespace SimpleBBS.Web.Models.Accounts
 {
     public class LoginViewModel
     {
-        [Required]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "用户名 必填")]
+        public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "密码 必填")]
         public string Password { get; set; }
 
     }

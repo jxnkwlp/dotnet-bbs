@@ -1,15 +1,8 @@
 ﻿
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "登录";
 }
 @model LoginViewModel
-
-
-
-@{
-    ViewData["Title"] = "Index";
-}
-
 
 <div class="row clearfix  ">
     <div class="col-md-9">
@@ -24,16 +17,16 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <div class="form-group">
-                            <label asp-for="Email" class="col-sm-2 control-label"></label>
+                            <label asp-for="UserName" class="col-sm-2 control-label">用户名</label>
                             <div class="col-md-5">
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Password" class="col-sm-2 control-label"></label>
+                            <label asp-for="Password" class="col-sm-2 control-label">密码</label>
                             <div class="col-md-5">
-                                <input asp-for="Password" class="form-control" />
+                                <input asp-for="Password" type="password" class="form-control" />
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                         </div>
@@ -68,3 +61,13 @@
         <partial name="_WidgetPartial" />
     </div>
 </div>
+
+
+
+@section scripts{
+
+    <partial name="_ValidationScriptsPartial" />
+
+}
+
+
