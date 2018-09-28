@@ -1,0 +1,16 @@
+﻿@{
+    var result = false;
+
+    if (TempData["message-type"] != null)
+    {
+        bool.TryParse(TempData["message-type"].ToString(), out result);
+    }
+}
+
+@if (TempData["message-type"] != null && TempData["message-content"] != null)
+{
+    <div class="alert @(result ? "alert-success" : "alert-danger") alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        @TempData["message-content"]
+    </div>
+}

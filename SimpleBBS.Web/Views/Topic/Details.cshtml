@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewData["Title"] = Model.Title;
+}
+@model TopicDetailsViewModel
+
+
+
+
+<div class="row clearfix  ">
+    <div class="col-md-9">
+
+        <div class="topic-details">
+            <div class="title-body">
+                <h1 class="title">@Model.Title</h1>
+
+                <p class="meta">
+                    <span>发布于 @(Model.PublishedTime.ToHumanityString())</span>
+                    <span>作者 <a asp-route="user" asp-route-id="@(Model.User?.UserName)">@(Model.User?.UserName)</a></span>
+                    <span>@(Model.ViewedCount)次浏览</span>
+                    <span>来自 @(Model.Tags?.Name)</span>
+
+                </p>
+                <p class="owner-action">
+                    <a asp-action="edit" asp-route-id="@(Model.Id)"><span class="fa fa-edit"></span> 编辑</a>
+                    <a href="#."><span class="fa fa-trash"></span> 删除</a>
+                </p>
+            </div>
+
+
+            <div class="content">
+                @Model.Content
+            </div>
+
+        </div>
+
+
+
+        @if (Model.Replies?.Count > 0)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">回复（@(Model.Replies?.Count)）</div>
+                <div class="panel-body reply-list" id="replyList">
+
+                    @for (int i = 0; i < Model.Replies.Count; i++)
+                    {
+                        var item = Model.Replies[i];
+
+                        <div class="reply-item" id="reply_@(item.Id)">
+                            <div class="user-info">
+                                <a asp-route="user" asp-route-id="@(item.User?.UserName)" class="user-avatar">
+                                    <img src="@(item.User?.Email.GeneralAvatarUrl())" title="@(item.User?.UserName)">
+                                </a>
+
+                                <a asp-route="user" asp-route-id="@(item.User?.UserName)" class="user-name">@(item.User?.UserName)</a>
+
+                                <a class="time" href="#reply_@(item.Id)">@(i + 1)楼 • @(item.CreationTime.ToHumanityString())</a>
+
+                                @if (item.UserId == Model.UserId)
+                                {
+                                    <span class="author">作者</span>
+                                }
+
+                                <span class="user-action">
+                                    <span class="action up @(item.UpCount > 0 ? "fixed" : "")"><a href="#."><i class="fa fa-thumbs-o-up"></i></a> @(item.UpCount == 0 ? "" : item.UpCount.ToString())</span>
+                                    <a href="#." class="action reply"><span class="fa fa-reply"></span></a>
+                                </span>
+                            </div>
+                            <div class="content">
+                                @if (item.ParentUser != null)
+                                {
+                                    <a asp-route="user" asp-route-id="@(item.ParentUser?.UserName)">@(item.ParentUser?.UserName)</a>
+                                }
+                                @item.Content
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+        }
+
+
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">添加回复</div>
+            <div class="panel-body reply-form" id="replyForm">
+
+                <div class="form-group">
+                    <input type="hidden" name="parentId" value="0" />
+
+                    <textarea class="form-control" name="content"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="addReply($(this),'@(Url.Action("addreply", new { topicId = Model.Id }))')">回复</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <partial name="_WidgetPartial" />
+    </div>
+</div>
+
+
+

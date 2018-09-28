@@ -1,6 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "dotnet core 社区";
 }
+
+
+@model TopicListViewModel
 
 <div class="main clearfix row ">
     <div class="content-area  col-md-9 ">
@@ -11,54 +14,33 @@
             </div>
 
             <div class="topic-list">
-                <div class="list-item clearfix">
-                    <a href="#" class="avatar"><img src="https://avatars1.githubusercontent.com/u/11460601?v=4&s=120" /></a>
-                    <span class="meta-count">10/55</span>
-                    <span class="meta-top">置顶</span>
-                    <a href="#" class="title">asp.net core 入门 ... </a>
 
-                    <span class="pull-right reply">
-                        <a href="#" class="reply-avatar"><img src="https://avatars1.githubusercontent.com/u/11460601?v=4&s=120" /></a>
-                        <span class="reply-time">11分钟前</span>
-                    </span>
-                </div>
+                @foreach (var item in Model.List)
+                {
+                    <div class="list-item clearfix">
+                        <a asp-route="user" asp-route-id="@(item.User?.UserName)" class="avatar" title="@(item.User?.UserName)"><img src="@(item.User?.Email.GeneralAvatarUrl())" /></a>
 
-                <div class="list-item">
-                    <a href="#" class="avatar"><img src="https://avatars1.githubusercontent.com/u/11460601?v=4&s=120" /></a>
-                    <span class="meta-count">10/55</span>
-                    <span class="meta-question">问答</span>
-                    <a href="#" class="title">asp.net core 入门 ... </a>
+                        <span class="meta-count" title="回复@(item.ReplyedCount) / 查看@(item.ViewedCount)">@item.ReplyedCount/@item.ViewedCount</span>
 
-                    <span class="pull-right reply">
-                        <a href="#" class="reply-avatar"><img src="https://avatars1.githubusercontent.com/u/11460601?v=4&s=120" /></a>
-                        <span class="reply-time">11分钟前</span>
-                    </span>
-                </div>
-                <div class="list-item">
-                    <a href="#" class="avatar"><img src="https://avatars1.githubusercontent.com/u/11460601?v=4&s=120" /></a>
-                    <span class="meta-count">10/55</span>
-                    <span class="meta-top">置顶</span>
-                    <a href="#" class="title">asp.net core 入门 ... </a>
+                        <span class="meta-tags">@(item.Tags?.Name)</span>
 
-                    <span class="pull-right reply">
-                        <a href="#" class="reply-avatar"><img src="https://avatars1.githubusercontent.com/u/11460601?v=4&s=120" /></a>
-                        <span class="reply-time">11分钟前</span>
-                    </span>
-                </div>
-                <div class="list-item">
-                    <a href="#" class="avatar"><img src="https://avatars1.githubusercontent.com/u/11460601?v=4&s=120" /></a>
-                    <span class="meta-count">10/55</span>
-                    <span class="meta-top">置顶</span>
-                    <a href="#" class="title">asp.net core 入门 ... </a>
+                        <a asp-route="topic" asp-route-id="@item.Id" class="title">@item.Title</a>
 
-                    <span class="pull-right reply">
-                        <a href="#" class="reply-avatar"><img src="https://avatars1.githubusercontent.com/u/11460601?v=4&s=120" /></a>
-                        <span class="reply-time">11分钟前</span>
-                    </span>
-                </div>
+                        @if (item.LastReply != null)
+                        {
+                            <span class="pull-right reply">
+                                <a asp-route="user" asp-route-id="@(item.LastReply.User?.UserName)" class="reply-avatar"><img src="@(item.LastReply.User?.Email.GeneralAvatarUrl())" /></a>
+                                <span class="reply-time">@item.LastReply.CreationTime.ToHumanityString()</span>
+                            </span>
+                        }
+                    </div>
+                }
 
             </div>
         </div>
+
+        <pager data="@Model.List" show-first-page="Never" show-last-page="Never" />
+
     </div>
 
     <div class="widget-area col-md-3  ">

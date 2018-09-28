@@ -1,8 +1,9 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "设置";
 }
 
+@model SettingViewModel
 
 <div class="row clearfix  ">
     <div class="col-md-9">
@@ -10,49 +11,93 @@
         <div class="panel panel-default">
             <div class="panel-heading">设置</div>
             <div class="panel-body">
-                <div class="form-horizontal">
 
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-                        <div class="col-sm-5">
-                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-                        <div class="col-sm-5">
-                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                        </div>
-                    </div>
+                <partial name="_ShowMessage" />
 
 
+                <form method="post">
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-5">
+                                <input asp-for="UserName" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-5">
+                                <input asp-for="Email" class="form-control" readonly />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">个人网站</label>
+                            <div class="col-sm-5">
+                                <input asp-for="SiteUrl" class="form-control" type="url" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所在地点</label>
+                            <div class="col-sm-5">
+                                <input asp-for="City" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">微博</label>
+                            <div class="col-sm-5">
+                                <input asp-for="WeiboId" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">GitHub</label>
+                            <div class="col-sm-5">
+                                <input asp-for="GitHubId" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">个性签名</label>
+                            <div class="col-sm-5">
+                                <input asp-for="UserSign" class="form-control" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-5 col-md-offset-2">
+                                <button class="btn btn-primary">保存设置</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">密码修改</div>
+            <div class="panel-body form-horizontal">
+
+                <form method="post" asp-action="changePassword">
+
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">个人网站</label>
+                        <label class="col-sm-2 control-label">原密码</label>
                         <div class="col-sm-5">
                             <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">所在地点</label>
+                        <label class="col-sm-2 control-label">新密码</label>
                         <div class="col-sm-5">
                             <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">微博</label>
-                        <div class="col-sm-5">
-                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">GitHub</label>
-                        <div class="col-sm-5">
-                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">个性签名</label>
+                        <label class="col-sm-2 control-label">确认密码</label>
                         <div class="col-sm-5">
                             <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
                         </div>
@@ -61,43 +106,11 @@
 
                     <div class="form-group">
                         <div class="col-sm-5 col-md-offset-2">
-                            <button class="btn btn-primary">保存设置</button>
+                            <button class="btn btn-primary">修改密码</button>
                         </div>
                     </div>
 
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading clearfix">密码修改</div>
-            <div class="panel-body form-horizontal">
-
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">原密码</label>
-                    <div class="col-sm-5">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">新密码</label>
-                    <div class="col-sm-5">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">确认密码</label>
-                    <div class="col-sm-5">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <div class="col-sm-5 col-md-offset-2">
-                        <button class="btn btn-primary">修改密码</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
 

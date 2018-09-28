@@ -8,7 +8,6 @@ namespace SimpleBBS.Core
     {
         Draft = 0,
         Auditing = 10,
-        Published = 100,
-        Deleted = 200,
+        Published = 100
     }
 }

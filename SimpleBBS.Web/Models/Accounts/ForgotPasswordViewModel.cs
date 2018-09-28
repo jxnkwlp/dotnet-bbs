@@ -13,5 +13,8 @@ namespace SimpleBBS.Web.Models.Accounts
         [EmailAddress(ErrorMessage = "Email 格式不正确")]
         public string Email { get; set; }
 
+
+        public bool Result { get; set; }
+
     }
 }

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleBBS.Data;
 
-namespace SimpleBBS.Web.data.migrations
+namespace SimpleBBS.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180928060950_add_reply_table")]
+    partial class add_reply_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,8 +122,6 @@ namespace SimpleBBS.Web.data.migrations
 
                     b.HasIndex("TopicId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Reply");
                 });
 
@@ -172,6 +172,8 @@ namespace SimpleBBS.Web.data.migrations
                     b.Property<DateTime>("CreationTime");
 
                     b.Property<bool>("Deleted");
+
+                    b.Property<Guid>("Guid");
 
                     b.Property<DateTime?>("LastModificationTime");
 
@@ -321,11 +323,6 @@ namespace SimpleBBS.Web.data.migrations
                     b.HasOne("SimpleBBS.Core.Topic", "Topic")
                         .WithMany()
                         .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SimpleBBS.Core.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -8,5 +8,8 @@ namespace SimpleBBS.Core
     {
         public string Name { get; set; }
 
+
+        public ICollection<Topic> Topics { get; set; }
+
     }
 }

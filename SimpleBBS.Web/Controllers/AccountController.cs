@@ -102,65 +102,58 @@ namespace SimpleBBS.Web.Controllers
         [AllowAnonymous]
         public IActionResult ForgotPassword()
         {
-            return View();
+            return View(new ForgotPasswordViewModel());
         }
 
 
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
+                model.Result = true;
+
                 var user = await _userservice.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userservice.IsEmailConfirmedAsync(user)))
+                if (user != null && (await _userservice.IsEmailConfirmedAsync(user)))
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToAction(nameof(ForgotPassword));
+                    // For more information on how to enable account confirmation and password reset please 
+                    // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                    var code = await _userservice.GeneratePasswordResetTokenAsync(user);
+                    var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, Request.Scheme);
+
+                    //await _emailSender.SendEmailAsync(
+                    //    Input.Email,
+                    //    "Reset Password",
+                    //    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                 }
-
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userservice.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, Request.Scheme);
-
-                //await _emailSender.SendEmailAsync(
-                //    Input.Email,
-                //    "Reset Password",
-                //    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
 
             return View(model);
         }
-
-
-        [AllowAnonymous]
-        public IActionResult ForgotPasswordConfirmation()
-        {
-            return View();
-        }
-
-
-
+         
         #endregion
 
         #region ResetPassword
 
         [AllowAnonymous]
-        public IActionResult ResetPassword(long? userId, string code)
+        public async Task<IActionResult> ResetPassword(long? userId, string code)
         {
             if (string.IsNullOrWhiteSpace(code) || userId == null)
                 return Redirect("~/");
 
-            var user = _userservice.FindByIdAsync(userId.Value);
+            var user = await _userservice.FindByIdAsync(userId.ToString());
 
             if (user == null)
             {
                 return Redirect("~/");
             }
 
-            var model = new ResetPasswordViewModel();
+            var model = new ResetPasswordViewModel()
+            {
+                UserId = userId.Value,
+                Email = user.Email,
+            };
 
             return View(model);
         }

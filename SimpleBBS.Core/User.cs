@@ -11,11 +11,12 @@ namespace SimpleBBS.Core
         public DateTime? LastLoginedTime { get; set; }
 
 
+        public UserInfo UserInfo { get; set; }
+
 
 
         public User()
         {
-
         }
 
 

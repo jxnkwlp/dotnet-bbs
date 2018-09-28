@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleBBS.Data;
 
-namespace SimpleBBS.Web.data.migrations
+namespace SimpleBBS.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180928015852_add_user_info_table")]
+    partial class add_user_info_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,34 +99,6 @@ namespace SimpleBBS.Web.data.migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SimpleBBS.Core.Reply", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<bool>("Forbided");
-
-                    b.Property<long>("ParentId");
-
-                    b.Property<long>("TopicId");
-
-                    b.Property<long>("UpCount");
-
-                    b.Property<long>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TopicId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reply");
-                });
-
             modelBuilder.Entity("SimpleBBS.Core.Role", b =>
                 {
                     b.Property<long>("Id")
@@ -146,56 +120,6 @@ namespace SimpleBBS.Web.data.migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
-                });
-
-            modelBuilder.Entity("SimpleBBS.Core.Tags", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tags");
-                });
-
-            modelBuilder.Entity("SimpleBBS.Core.Topic", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<DateTime?>("LastModificationTime");
-
-                    b.Property<DateTime>("PublishedTime");
-
-                    b.Property<long>("ReplyedCount");
-
-                    b.Property<int>("Status");
-
-                    b.Property<long>("TagsId");
-
-                    b.Property<string>("Title");
-
-                    b.Property<long>("UserId");
-
-                    b.Property<long>("ViewedCount");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TagsId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Topics");
                 });
 
             modelBuilder.Entity("SimpleBBS.Core.User", b =>
@@ -311,32 +235,6 @@ namespace SimpleBBS.Web.data.migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
                 {
                     b.HasOne("SimpleBBS.Core.User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SimpleBBS.Core.Reply", b =>
-                {
-                    b.HasOne("SimpleBBS.Core.Topic", "Topic")
-                        .WithMany()
-                        .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SimpleBBS.Core.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SimpleBBS.Core.Topic", b =>
-                {
-                    b.HasOne("SimpleBBS.Core.Tags", "Tags")
-                        .WithMany("Topics")
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SimpleBBS.Core.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

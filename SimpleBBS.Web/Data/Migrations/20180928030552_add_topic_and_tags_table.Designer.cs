@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleBBS.Data;
 
-namespace SimpleBBS.Web.data.migrations
+namespace SimpleBBS.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180928030552_add_topic_and_tags_table")]
+    partial class add_topic_and_tags_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,34 +99,6 @@ namespace SimpleBBS.Web.data.migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SimpleBBS.Core.Reply", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<bool>("Forbided");
-
-                    b.Property<long>("ParentId");
-
-                    b.Property<long>("TopicId");
-
-                    b.Property<long>("UpCount");
-
-                    b.Property<long>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TopicId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reply");
-                });
-
             modelBuilder.Entity("SimpleBBS.Core.Role", b =>
                 {
                     b.Property<long>("Id")
@@ -173,6 +147,8 @@ namespace SimpleBBS.Web.data.migrations
 
                     b.Property<bool>("Deleted");
 
+                    b.Property<Guid>("Guid");
+
                     b.Property<DateTime?>("LastModificationTime");
 
                     b.Property<DateTime>("PublishedTime");
@@ -185,15 +161,13 @@ namespace SimpleBBS.Web.data.migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<long>("UserId");
+                    b.Property<int>("UserId");
 
                     b.Property<long>("ViewedCount");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TagsId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Topics");
                 });
@@ -316,29 +290,11 @@ namespace SimpleBBS.Web.data.migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SimpleBBS.Core.Reply", b =>
-                {
-                    b.HasOne("SimpleBBS.Core.Topic", "Topic")
-                        .WithMany()
-                        .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SimpleBBS.Core.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SimpleBBS.Core.Topic", b =>
                 {
                     b.HasOne("SimpleBBS.Core.Tags", "Tags")
                         .WithMany("Topics")
                         .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SimpleBBS.Core.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

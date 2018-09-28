@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-SimpleBBS-C32E489D-FC4E-4062-955E-E93439FF76C7</UserSecretsId>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +24,7 @@
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Data\Migrations\" />
-    <Folder Include="Models\Topics\" />
+    <Folder Include="Models\新文件夹\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +33,9 @@
 
   <ItemGroup>
     <Content Update="Views\Account\Register.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_ShowMessage.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Shared\_WidgetPartial.cshtml">

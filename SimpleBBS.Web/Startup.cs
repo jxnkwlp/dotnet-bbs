@@ -40,7 +40,10 @@ namespace SimpleBBS
                 }
                 else
                 {
-                    options.UseSqlite(connectionString);
+                    options.UseSqlite(connectionString, o =>
+                    {
+
+                    });
                 }
             });
 
@@ -56,6 +59,11 @@ namespace SimpleBBS
                 .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
+            services.AddScoped<TopicService>();
+            services.AddScoped<TagsService>();
+            services.AddScoped<ReplyService>();
 
         }
 
@@ -81,6 +89,9 @@ namespace SimpleBBS
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute("user", "user/{id}", new { controller = "user", action = "info" });
+                routes.MapRoute("topic", "topic/{id:int}", new { controller = "topic", action = "details" });
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

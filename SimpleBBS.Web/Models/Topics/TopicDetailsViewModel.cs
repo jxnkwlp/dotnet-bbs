@@ -1,19 +1,23 @@
-﻿using System;
+﻿using SimpleBBS.Core;
+using SimpleBBS.Web.Models.Users;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace SimpleBBS.Core
+namespace SimpleBBS.Web.Models.Topics
 {
-    public class Topic : BaseEntity
+    public class TopicDetailsViewModel
     {
-        // public Guid Guid { get; set; } = Guid.NewGuid();
+        public long Id { get; set; }
+        public Guid Guid { get; set; }
 
         public string Title { get; set; }
 
         public string Content { get; set; }
 
         public long UserId { get; set; }
-        public User User { get; set; }
+        public UserBaseViewModel User { get; set; }
 
         public long ViewedCount { get; set; }
 
@@ -23,13 +27,13 @@ namespace SimpleBBS.Core
 
         public DateTime PublishedTime { get; set; }
 
-        public bool Deleted { get; set; } = false;
-
         public TopicStatus Status { get; set; }
 
         public long TagsId { get; set; }
 
         public Tags Tags { get; set; }
 
+
+        public IList<ReplyViewModel> Replies { get; set; }
     }
 }
