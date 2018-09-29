@@ -21,10 +21,13 @@
                     <span>来自 @(Model.Tags?.Name)</span>
 
                 </p>
-                <p class="owner-action">
-                    <a asp-action="edit" asp-route-id="@(Model.Id)"><span class="fa fa-edit"></span> 编辑</a>
-                    <a href="#." onclick="deleteTopic('@Url.Action("delete", new { id = Model.Id })')"><span class="fa fa-trash"></span> 删除</a>
-                </p>
+                @if (Model.ShowEditBar)
+                {
+                    <p class="owner-action">
+                        <a asp-action="edit" asp-route-id="@(Model.Id)"><span class="fa fa-edit"></span> 编辑</a>
+                        <a href="#." onclick="deleteTopic('@Url.Action("delete", new { id = Model.Id })')"><span class="fa fa-trash"></span> 删除</a>
+                    </p>
+                }
             </div>
 
             <div class="content">

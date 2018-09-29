@@ -66,7 +66,7 @@ namespace SimpleBBS.Web.Controllers
 
 
 
-            model.ShowEditBar = topic.UserId == userId;
+            model.ShowEditBar = (User.Identity.IsAuthenticated && topic.UserId == userId);
 
             return View(model);
         }
@@ -139,9 +139,9 @@ namespace SimpleBBS.Web.Controllers
 
                     return RedirectToAction(nameof(Details), new { id = entity.Id });
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    ModelState.AddModelError("", ex.Message);
                 }
 
             }
@@ -199,8 +199,9 @@ namespace SimpleBBS.Web.Controllers
 
                     return RedirectToAction(nameof(Details), new { id = entity.Id });
                 }
-                catch (Exception)
-                { 
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
                 }
 
             }
