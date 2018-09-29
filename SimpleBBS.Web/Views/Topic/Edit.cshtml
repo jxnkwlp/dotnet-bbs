@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "修改话题资料";
+
+    var tagsSelectList = Model.AllTags.Select(t => new SelectListItem(t.Name, t.Id.ToString()));
+}
+
+@model TopicCreateOrUpdateViewModel
+
+<partial name="_CreateOrEdit" model="Model" />
+
+@section scripts{
+
+    <script>
+        addMDE('Content');
+    </script>
+
+}
+
+

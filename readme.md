@@ -1,6 +1,10 @@
 .net core 社区网站，coding
 ========================
 
+欢迎大家来共同参与　　
+
+预览地址　http://dotnet.wuliping.cn
+
 ## TODO
 
 

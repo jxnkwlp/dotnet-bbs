@@ -35,5 +35,8 @@ namespace SimpleBBS.Web.Models.Topics
 
 
         public IList<ReplyViewModel> Replies { get; set; }
+
+
+        public bool ShowEditBar { get; set; }
     }
 }

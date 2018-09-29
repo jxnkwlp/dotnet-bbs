@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleBBS.Core;
 using SimpleBBS.Web.Models;
@@ -10,6 +11,7 @@ using SimpleBBS.Web.Services;
 
 namespace SimpleBBS.Web.Controllers
 {
+    [Authorize]
     public class TopicController : WebBaseController
     {
         private readonly TopicService _topicService;
@@ -39,8 +41,11 @@ namespace SimpleBBS.Web.Controllers
         }
 
 
+        [AllowAnonymous]
         public async Task<IActionResult> Details(long id)
         {
+            var userId = User.Identity.GetUserId<long>();
+
             var topic = await _topicService.GetTopicByIdAsync(id);
 
             if (topic == null)
@@ -59,9 +64,42 @@ namespace SimpleBBS.Web.Controllers
 
             await _topicService.IncreaseViewCountAsync(topic);
 
+
+
+            model.ShowEditBar = topic.UserId == userId;
+
             return View(model);
         }
 
+
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var userId = User.Identity.GetUserId<long>();
+
+            var topic = await _topicService.GetTopicByIdAsync(id, false, false);
+
+            if (topic != null)
+            {
+                if (topic.UserId != userId)
+                {
+                    return Json(new { result = false });
+                }
+
+                try
+                {
+                    await _topicService.MakeAsDeletedAsync(id);
+
+                    return Json(new { result = true });
+                }
+                catch (Exception)
+                {
+                }
+
+            }
+
+            return Json(new { result = false });
+        }
 
 
         #region Create
@@ -116,6 +154,61 @@ namespace SimpleBBS.Web.Controllers
 
         #region Edit
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var userId = User.Identity.GetUserId<long>();
+
+            var topic = await _topicService.GetTopicByIdAsync(id, false, false);
+
+            if (topic == null)
+                return NotFound();
+
+            if (topic.UserId != userId)
+                return NotFound();
+
+            var model = topic.ToEditModel();
+
+            PrepareViewModel(model);
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(TopicCreateOrUpdateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.Identity.GetUserId<long>();
+
+                var entity = await _topicService.GetTopicByIdAsync(model.Id, false, false);
+                if (entity == null)
+                    return NotFound();
+
+                entity.Content = model.Content;
+                entity.TagsId = model.TagsId;
+                entity.Title = model.Title;
+
+                entity.PublishedTime = DateTime.Now;
+                entity.LastModificationTime = DateTime.Now;
+
+                try
+                {
+                    await _topicService.UpdateAsync(entity);
+
+                    return RedirectToAction(nameof(Details), new { id = entity.Id });
+                }
+                catch (Exception)
+                { 
+                }
+
+            }
+
+            PrepareViewModel(model);
+            return View(model);
+        }
+
         #endregion
 
         #region reply
@@ -142,8 +235,9 @@ namespace SimpleBBS.Web.Controllers
             return result;
         }
 
+
         [HttpPost]
-        public async Task<ActionResult> AddReply(AddReplyViewModel model)
+        public async Task<ActionResult> SubmitReply(AddReplyViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -172,6 +266,12 @@ namespace SimpleBBS.Web.Controllers
             }
             return Json(new { result = false });
         }
+
+
+
+        #endregion
+
+        #region ReplyUp
 
 
 

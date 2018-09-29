@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeyRed.MarkdownSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,5 +59,26 @@ namespace SimpleBBS.Web
 
             return "半年前";
         }
+
+
+        public static string TransformMarkdownToHtml(this string text)
+        {
+            var result = CommonMark.CommonMarkConverter.Convert(text);
+
+            return result.ToString();
+
+            //// Create new markdown instance
+            //Markdown mark = new Markdown(new MarkdownOptions()
+            //{
+            //    AutoNewLines = true,
+            //});
+
+            //// Run parser
+            //string html = mark.Transform(text);
+
+            //return html;
+        }
+
+
     }
 }

@@ -23,13 +23,12 @@
                 </p>
                 <p class="owner-action">
                     <a asp-action="edit" asp-route-id="@(Model.Id)"><span class="fa fa-edit"></span> 编辑</a>
-                    <a href="#."><span class="fa fa-trash"></span> 删除</a>
+                    <a href="#." onclick="deleteTopic('@Url.Action("delete", new { id = Model.Id })')"><span class="fa fa-trash"></span> 删除</a>
                 </p>
             </div>
 
-
             <div class="content">
-                @Model.Content
+                @Html.Raw(Model.Content.TransformMarkdownToHtml())
             </div>
 
         </div>
@@ -46,33 +45,37 @@
                     {
                         var item = Model.Replies[i];
 
-                        <div class="reply-item" id="reply_@(item.Id)">
-                            <div class="user-info">
-                                <a asp-route="user" asp-route-id="@(item.User?.UserName)" class="user-avatar">
-                                    <img src="@(item.User?.Email.GeneralAvatarUrl())" title="@(item.User?.UserName)">
-                                </a>
+                        <div class="reply-item" id="reply_@(item.Id)" data-id="@(item.Id)">
+                            <div>
+                                <div class="user-info">
+                                    <a asp-route="user" asp-route-id="@(item.User?.UserName)" class="user-avatar">
+                                        <img src="@(item.User?.Email.GeneralAvatarUrl())" title="@(item.User?.UserName)">
+                                    </a>
 
-                                <a asp-route="user" asp-route-id="@(item.User?.UserName)" class="user-name">@(item.User?.UserName)</a>
+                                    <a asp-route="user" asp-route-id="@(item.User?.UserName)" class="user-name">@(item.User?.UserName)</a>
 
-                                <a class="time" href="#reply_@(item.Id)">@(i + 1)楼 • @(item.CreationTime.ToHumanityString())</a>
+                                    <a class="time" href="#reply_@(item.Id)">@(i + 1)楼 • @(item.CreationTime.ToHumanityString())</a>
 
-                                @if (item.UserId == Model.UserId)
-                                {
-                                    <span class="author">作者</span>
-                                }
+                                    @if (item.UserId == Model.UserId)
+                                    {
+                                        <span class="author">作者</span>
+                                    }
 
-                                <span class="user-action">
-                                    <span class="action up @(item.UpCount > 0 ? "fixed" : "")"><a href="#."><i class="fa fa-thumbs-o-up"></i></a> @(item.UpCount == 0 ? "" : item.UpCount.ToString())</span>
-                                    <a href="#." class="action reply"><span class="fa fa-reply"></span></a>
-                                </span>
+                                    <span class="user-action">
+                                        <span class="action up @(item.UpCount > 0 ? "fixed" : "")"><a href="javascript:;" onclick=""><i class="fa fa-thumbs-o-up"></i></a> @(item.UpCount == 0 ? "" : item.UpCount.ToString())</span>
+                                        <a href="javascript:;" class="action reply" onclick="insertReplyForm($(this))"><span class="fa fa-reply"></span></a>
+                                    </span>
+                                </div>
+                                <div class="content">
+                                    @if (item.ParentUser != null)
+                                    {
+                                        <a asp-route="user" asp-route-id="@(item.ParentUser?.UserName)">@@@(item.ParentUser?.UserName)</a>
+                                    }
+
+                                    @Html.Raw(item.Content.TransformMarkdownToHtml())
+                                </div>
                             </div>
-                            <div class="content">
-                                @if (item.ParentUser != null)
-                                {
-                                    <a asp-route="user" asp-route-id="@(item.ParentUser?.UserName)">@(item.ParentUser?.UserName)</a>
-                                }
-                                @item.Content
-                            </div>
+
                         </div>
                     }
 
@@ -84,17 +87,19 @@
 
 
 
-        <div class="panel panel-default">
+        <div class="panel panel-default" id="replyFormPanel">
             <div class="panel-heading">添加回复</div>
             <div class="panel-body reply-form" id="replyForm">
 
-                <div class="form-group">
-                    <input type="hidden" name="parentId" value="0" />
-
+                <div class="form-group" id="replyContentBody">
                     <textarea class="form-control" name="content"></textarea>
                 </div>
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" onclick="addReply($(this),'@(Url.Action("addreply", new { topicId = Model.Id }))')">回复</button>
+                    <input type="hidden" name="parentId" value="0" />
+
+                    <button type="button" class="btn btn-primary" onclick="submitReply($(this),'@(Url.Action("submitReply", new { topicId = Model.Id }))')">回复</button>
+
+                    <a href="javascript:;" class="btn btn-link btn-cancel" onclick="cancelReply($(this));">取消</a>
                 </div>
 
             </div>
@@ -108,3 +113,10 @@
 
 
 
+@section scripts{
+
+    <script>
+        addMDE('replyContentBody', 300, true);
+    </script>
+
+}

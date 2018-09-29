@@ -20,6 +20,17 @@ namespace SimpleBBS.Web.Services
         }
 
 
+        public async Task<User> GetUserFullInfoAsync(long userId)
+        {
+            var entity = await _dbContext.FindAsync<User>(userId);
+            if (entity != null)
+            {
+                await _dbContext.Entry(entity).Reference(t => t.UserInfo).LoadAsync();
+            }
+
+            return entity;
+        }
+
         public async Task<UserInfo> GetUserInfoAsync(long userId)
         {
             return await _dbContext.FindAsync<UserInfo>(userId);

@@ -233,6 +233,11 @@
 .reply-list .reply-item:hover .up {
   display: inline-block;
 }
+.reply-list .reply-item .reply-form {
+  padding-top: 10px;
+  margin-left: 50px;
+  margin-bottom: -15px;
+}
 .user-info .avatar {
   vertical-align: top;
   margin-bottom: 20px;
@@ -250,4 +255,7 @@
 }
 .reply-form {
   padding-bottom: 0;
+}
+.reply-form .btn-cancel {
+  display: none;
 }

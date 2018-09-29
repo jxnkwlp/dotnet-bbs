@@ -49,6 +49,17 @@ namespace SimpleBBS.Web.Models
             };
         }
 
+        public static TopicCreateOrUpdateViewModel ToEditModel(this Topic entity)
+        {
+            return new TopicCreateOrUpdateViewModel()
+            {
+                Id = entity.Id,
+                Content = entity.Content,
+                Title = entity.Title,
+                TagsId = entity.TagsId,
+            };
+        }
+
         public static ReplyViewModel ToModel(this Reply entity)
         {
             return new ReplyViewModel()
@@ -71,6 +82,7 @@ namespace SimpleBBS.Web.Models
                 Email = entity.Email,
                 Id = entity.Id,
                 UserName = entity.UserName,
+                UserSign = entity.UserInfo?.UserSign,
             };
         }
     }

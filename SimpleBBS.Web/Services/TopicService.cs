@@ -18,13 +18,19 @@ namespace SimpleBBS.Web.Services
 
         }
 
-        public async Task AddAsync(Topic topic)
+        public async Task AddAsync(Topic entity)
         {
-            _dbContext.Add(topic);
+            _dbContext.Add(entity);
 
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(Topic entity)
+        {
+            _dbContext.Update(entity);
+
+            await _dbContext.SaveChangesAsync();
+        }
 
         public async Task<Topic> GetTopicByIdAsync(long id, bool loadUser = true, bool loadTags = true)
         {
@@ -90,6 +96,15 @@ namespace SimpleBBS.Web.Services
             }
         }
 
+        public async Task MakeAsDeletedAsync(long topicId)
+        {
+            var topic = await _dbContext.Topics.FindAsync(topicId);
+            if (topic != null)
+            {
+                topic.Deleted = true;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
 
 
     }

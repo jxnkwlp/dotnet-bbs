@@ -29,8 +29,8 @@ namespace SimpleBBS.Web.Services
         {
             return _dbContext.Reply
                 .Where(t => t.TopicId == id)
-                .OrderByDescending(t => t.CreationTime)
-                .ThenByDescending(t => t.Id)
+                .OrderBy(t => t.CreationTime)
+                .ThenBy(t => t.Id)
                 .Include(t => t.User)
                 .ToListAsync();
         }
