@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SimpleBBS.Web.data.migrations
+namespace SimpleBBS.Web.Migrations
 {
-    public partial class firstinit : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,11 +42,26 @@ namespace SimpleBBS.Web.data.migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    LastLoginedTime = table.Column<DateTime>(nullable: true)
+                    LastLoginedTime = table.Column<DateTime>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,6 +170,95 @@ namespace SimpleBBS.Web.data.migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserInfo",
+                columns: table => new
+                {
+                    UserId = table.Column<long>(nullable: false),
+                    SiteUrl = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    WeiboId = table.Column<string>(nullable: true),
+                    GitHubId = table.Column<string>(nullable: true),
+                    UserSign = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserInfo", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_UserInfo_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Topics",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    Title = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    UserId = table.Column<long>(nullable: false),
+                    ViewedCount = table.Column<long>(nullable: false),
+                    ReplyedCount = table.Column<long>(nullable: false),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    PublishedTime = table.Column<DateTime>(nullable: false),
+                    Deleted = table.Column<bool>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    TagsId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Topics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Topics_Tags_TagsId",
+                        column: x => x.TagsId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Topics_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reply",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    TopicId = table.Column<long>(nullable: false),
+                    ParentId = table.Column<long>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    UserId = table.Column<long>(nullable: false),
+                    UpCount = table.Column<long>(nullable: false),
+                    Forbided = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reply", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reply_Topics_TopicId",
+                        column: x => x.TopicId,
+                        principalTable: "Topics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reply_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +295,26 @@ namespace SimpleBBS.Web.data.migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reply_TopicId",
+                table: "Reply",
+                column: "TopicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reply_UserId",
+                table: "Reply",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Topics_TagsId",
+                table: "Topics",
+                column: "TagsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Topics_UserId",
+                table: "Topics",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,7 +335,19 @@ namespace SimpleBBS.Web.data.migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Reply");
+
+            migrationBuilder.DropTable(
+                name: "UserInfo");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Topics");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -1,0 +1,18 @@
+﻿@model TopicListViewModel
+
+
+<div class="panel panel-default" Condition="@(Model.List.Count != 0)" >
+    <div class="panel-heading clearfix">最近创建的话题 <a asp-route="UserTopics" asp-route-userid="@(User.Identity.Name)" class="pull-right">查看更多</a> </div>
+    <div class="panel-body topic-list">
+        <div class="">
+
+            @foreach (var item in Model.List)
+            {
+                <text>
+                    <partial name="_TopicRow" model="item" />
+                </text>
+            }
+             
+        </div>
+    </div>
+</div>

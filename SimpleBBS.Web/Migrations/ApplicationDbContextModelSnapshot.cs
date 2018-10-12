@@ -2,17 +2,15 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleBBS.Data;
 
-namespace SimpleBBS.Web.Data.Migrations
+namespace SimpleBBS.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180928060950_add_reply_table")]
-    partial class add_reply_table
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,6 +120,8 @@ namespace SimpleBBS.Web.Data.Migrations
 
                     b.HasIndex("TopicId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Reply");
                 });
 
@@ -173,8 +173,6 @@ namespace SimpleBBS.Web.Data.Migrations
 
                     b.Property<bool>("Deleted");
 
-                    b.Property<Guid>("Guid");
-
                     b.Property<DateTime?>("LastModificationTime");
 
                     b.Property<DateTime>("PublishedTime");
@@ -209,6 +207,8 @@ namespace SimpleBBS.Web.Data.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<DateTime>("CreationTime");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -323,6 +323,11 @@ namespace SimpleBBS.Web.Data.Migrations
                     b.HasOne("SimpleBBS.Core.Topic", "Topic")
                         .WithMany()
                         .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SimpleBBS.Core.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleBBS.Data;
 
-namespace SimpleBBS.Web.data.migrations
+namespace SimpleBBS.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180927062345_first-init")]
-    partial class firstinit
+    [Migration("20181012075244_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -99,6 +99,34 @@ namespace SimpleBBS.Web.data.migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("SimpleBBS.Core.Reply", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<bool>("Forbided");
+
+                    b.Property<long>("ParentId");
+
+                    b.Property<long>("TopicId");
+
+                    b.Property<long>("UpCount");
+
+                    b.Property<long>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reply");
+                });
+
             modelBuilder.Entity("SimpleBBS.Core.Role", b =>
                 {
                     b.Property<long>("Id")
@@ -122,6 +150,56 @@ namespace SimpleBBS.Web.data.migrations
                     b.ToTable("AspNetRoles");
                 });
 
+            modelBuilder.Entity("SimpleBBS.Core.Tags", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("SimpleBBS.Core.Topic", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<DateTime>("PublishedTime");
+
+                    b.Property<long>("ReplyedCount");
+
+                    b.Property<int>("Status");
+
+                    b.Property<long>("TagsId");
+
+                    b.Property<string>("Title");
+
+                    b.Property<long>("UserId");
+
+                    b.Property<long>("ViewedCount");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TagsId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Topics");
+                });
+
             modelBuilder.Entity("SimpleBBS.Core.User", b =>
                 {
                     b.Property<long>("Id")
@@ -131,6 +209,8 @@ namespace SimpleBBS.Web.data.migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<DateTime>("CreationTime");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -172,6 +252,27 @@ namespace SimpleBBS.Web.data.migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("SimpleBBS.Core.UserInfo", b =>
+                {
+                    b.Property<long>("UserId");
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("GitHubId");
+
+                    b.Property<string>("SiteUrl");
+
+                    b.Property<string>("UserSign");
+
+                    b.Property<string>("WeiboId");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserInfo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -216,6 +317,40 @@ namespace SimpleBBS.Web.data.migrations
                     b.HasOne("SimpleBBS.Core.User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SimpleBBS.Core.Reply", b =>
+                {
+                    b.HasOne("SimpleBBS.Core.Topic", "Topic")
+                        .WithMany()
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SimpleBBS.Core.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SimpleBBS.Core.Topic", b =>
+                {
+                    b.HasOne("SimpleBBS.Core.Tags", "Tags")
+                        .WithMany("Topics")
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SimpleBBS.Core.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SimpleBBS.Core.UserInfo", b =>
+                {
+                    b.HasOne("SimpleBBS.Core.User", "User")
+                        .WithOne("UserInfo")
+                        .HasForeignKey("SimpleBBS.Core.UserInfo", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

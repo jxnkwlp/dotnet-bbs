@@ -23,9 +23,28 @@ namespace SimpleBBS.Web.Controllers
         }
 
 
-        public IActionResult Info()
+        public async Task<IActionResult> Info()
         {
-            return View();
+            var userId = User.Identity.GetUserId<long>();
+
+            var user = await _userService.FindByIdAsync(userId.ToString());
+            var userInfo = await _userService.GetUserInfoAsync(userId);
+
+            var model = new UserFullInfoViewModel()
+            {
+                Id = userId,
+                CreationTime = user.CreationTime,
+                UserName = user.UserName,
+                Email = user.Email,
+
+                City = userInfo?.City,
+                GitHubId = userInfo?.GitHubId,
+                SiteUrl = userInfo?.SiteUrl,
+                UserSign = userInfo?.UserSign,
+                WeiboId = userInfo?.WeiboId,
+            };
+
+            return View(model);
         }
 
 
@@ -84,6 +103,13 @@ namespace SimpleBBS.Web.Controllers
         {
 
             return await Setting();
+        }
+
+
+        [Route("user/{userId}/topics", Name = "UserTopics")]
+        public IActionResult Topics()
+        {
+            return View();
         }
 
     }

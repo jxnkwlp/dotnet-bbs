@@ -9,7 +9,12 @@ namespace SimpleBBS.Core
         long Id { get; set; }
     }
 
-    public abstract class BaseEntity : IEntity
+    public interface ICreationTimeEntity
+    {
+        DateTime CreationTime { get; set; }
+    }
+
+    public abstract class BaseEntity : IEntity, ICreationTimeEntity
     {
         public long Id { get; set; }
 

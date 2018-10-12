@@ -36,7 +36,7 @@ namespace SimpleBBS.Data
 
         public override EntityEntry<TEntity> Add<TEntity>(TEntity entity)
         {
-            if (entity is BaseEntity @base)
+            if (entity is ICreationTimeEntity @base)
             {
                 @base.CreationTime = DateTime.Now;
             }
@@ -45,7 +45,7 @@ namespace SimpleBBS.Data
 
         public override Task<EntityEntry<TEntity>> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
         {
-            if (entity is BaseEntity @base)
+            if (entity is ICreationTimeEntity @base)
             {
                 @base.CreationTime = DateTime.Now;
             }

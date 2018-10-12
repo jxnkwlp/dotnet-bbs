@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.Routing;
 using System.Linq;
 
-namespace SimpleBBS.Web
+namespace SimpleBBS.Web.TagHelpers
 {
     [HtmlTargetElement("pager")]
     public class PagerTaghelper : TagHelper

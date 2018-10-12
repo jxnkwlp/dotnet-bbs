@@ -90,7 +90,9 @@ namespace SimpleBBS
             app.UseMvc(routes =>
             {
                 routes.MapRoute("user", "user/{id}", new { controller = "user", action = "info" });
+                // routes.MapRoute("user-topic", "topic/{id:int}", new { controller = "user", action = "topic" });
                 routes.MapRoute("topic", "topic/{id:int}", new { controller = "topic", action = "details" });
+                
 
                 routes.MapRoute(
                     name: "default",

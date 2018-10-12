@@ -46,6 +46,15 @@
     <Content Update="Views\Shared\Components\UserInfo\Default.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Shared\Components\UserJoinedTopic\Default.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\Components\UserLastTopic\Default.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_TopicRow.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_ShowMessage.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

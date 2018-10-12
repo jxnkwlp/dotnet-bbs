@@ -1,0 +1,20 @@
+﻿@model TopicListItemViewModel
+
+
+<div class="list-item clearfix">
+    <a asp-route="user" asp-route-id="@(Model.User?.UserName)" class="avatar" title="@(Model.User?.UserName)"><GAvatar email="@(Model.User?.Email)" /></a>
+
+    <span class="meta-count" title="回复@(Model.ReplyedCount) / 查看@(Model.ViewedCount)">@Model.ReplyedCount/@Model.ViewedCount</span>
+
+    <span class="meta-tags">@(Model.Tags?.Name)</span>
+
+    <a asp-route="topic" asp-route-id="@Model.Id" class="title">@Model.Title</a>
+
+    @if (Model.LastReply != null)
+    {
+        <span class="pull-right reply">
+            <a asp-route="user" asp-route-id="@(Model.LastReply.User?.UserName)" class="reply-avatar"><GAvatar email="@(Model.LastReply.User?.Email)" /></a>
+            <span class="reply-time">@Model.LastReply.CreationTime.ToHumanityString()</span>
+        </span>
+    }
+</div>

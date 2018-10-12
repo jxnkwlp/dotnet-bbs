@@ -56,12 +56,17 @@ namespace SimpleBBS.Web.Services
             //  _dbContext.Database.ExecuteSqlCommand("update Topics set Guid=@v ", new { v = Guid.NewGuid().ToString() });
         }
 
-        public IPagedList<Topic> GetLastedList(int page, int pageSize, long? tagsId = null)
+        public IPagedList<Topic> GetLastedList(int page, int pageSize, int? userId = null, long? tagsId = null)
         {
             var query = _dbContext.Topics
                 .Where(t => !t.Deleted && t.Status == TopicStatus.Published)
                 .OrderByDescending(t => t.CreationTime)
                 .AsQueryable();
+
+            if (userId.HasValue)
+            {
+                query = query.Where(t => t.UserId == userId.Value);
+            }
 
             if (tagsId.HasValue)
             {
@@ -74,6 +79,24 @@ namespace SimpleBBS.Web.Services
 
             return query.ToPagedList(page, pageSize);
         }
+
+
+        public IPagedList<Topic> GetListByUserLastReply(int page, int pageSize, int userId)
+        {
+            var query = _dbContext.Reply
+                 .Where(t => t.UserId == userId)
+                 .Select(t => t.Topic)
+                 .Distinct()
+                 .OrderByDescending(t => t.CreationTime)
+                 .AsQueryable();
+
+            query = query
+                .Include(t => t.User)
+                .Include(t => t.Tags);
+
+            return query.ToPagedList(page, pageSize);
+        }
+
 
 
 
